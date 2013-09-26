@@ -108,7 +108,7 @@ class program
     {
         Console.Clear();
         DisplayInstructions();
-        Console.WriteLine("┌-----------¬");
+        Console.WriteLine("┌───────────┐");
         for (int row = 0; row < 3; row++)
         {
             char[] arr = new char[3];
@@ -124,7 +124,7 @@ class program
                 }
             }
             Console.WriteLine("| {0} |", string.Join(" | ", arr));
-            Console.WriteLine("├---┼---┼---┤");
+            Console.WriteLine("├───┼───┼───┤");
         }
         Console.WriteLine("\nPlayer {0}'s Turn...", currentPlayer == Player.P1 ? '1' : '2');
     }
