@@ -8,10 +8,19 @@ public class program
     public static void Main()
     {
         Console.WindowHeight = 30;
-        Console.WindowWidth = 40;
+        Console.WindowWidth = 50;
+        Console.WriteLine("Name of player 1?");
+        string P1 = Console.ReadLine();
+        Console.WriteLine("Name of player 2?");
+        string P2 = Console.ReadLine();
+        Console.WriteLine("Welcome " + P1 + " and " + P2);
+        Console.WriteLine(P1 + " is X and " + P2 + " is O");
+        Console.WriteLine("Press any key to start playing TicTacToe");
+        Console.ReadKey();
+        Console.Clear();
 
-        var PlayerOne = new Player("Simon", 'X');
-        var PlayerTwo = new Player("Rickard", 'O');
+        var PlayerOne = new Player(P1, 'X');
+        var PlayerTwo = new Player(P2, 'O');
         var MyBoard = new Board();
 
         Console.WriteLine(MyBoard.DrawBoard());

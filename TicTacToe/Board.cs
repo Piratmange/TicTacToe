@@ -22,7 +22,9 @@ public class Board
     //Draws the board, can exchange for a loop
     public string DrawBoard()
     {
-        return "+-----------+\n|   |   |   |\n|   |   |   |\n|   |   |   |\n|---+---+---|\n|   |   |   |\n|   |   |   |\n|   |   |   |\n|---+---+---|\n|   |   |   |\n|   |   |   |\n|   |   |   |\n+-----------+\n";
+        Console.BackgroundColor = ConsoleColor.DarkRed;
+        Console.ForegroundColor = ConsoleColor.Black;
+        return "┌───┬───┬───┐\n|   |   |   |\n|   |   |   |\n|   |   |   |\n├───┼───┼───┤\n|   |   |   |\n|   |   |   |\n|   |   |   |\n├───┼───┼───┤\n|   |   |   |\n|   |   |   |\n|   |   |   |\n└───┴───┴───┘\n";
     }
 
     public void MoveOnBoard(Player player)

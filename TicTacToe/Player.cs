@@ -18,6 +18,7 @@ public class Player
     }
     public void Iwon()
     {
+        Console.ResetColor();
         Console.Clear();
         Console.WriteLine("Player {0} has won the game", this.Name);
     }
