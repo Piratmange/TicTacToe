@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 public class Board
 {
     public int PosX { get; set; }
@@ -18,16 +16,44 @@ public class Board
         PosY = 2;
         OccupiedBoardSpaces = new List<int>() { 0 };
     }
-
     //Draws the board, can exchange for a loop
     public string DrawBoard()
     {
         return "+-----------+\n|   |   |   |\n|   |   |   |\n|   |   |   |\n|---+---+---|\n|   |   |   |\n|   |   |   |\n|   |   |   |\n|---+---+---|\n|   |   |   |\n|   |   |   |\n|   |   |   |\n+-----------+\n";
     }
-
+    //Translates Coordinates to Position (1-9)
+    public int CoordsToPos(int x, int y)
+    {
+        if (x == 2 && y == 2) { return 1; }
+        if (x == 6 && y == 2) { return 2; }
+        if (x == 10 && y == 2) { return 3; }
+        if (x == 2 && y == 6) { return 4; }
+        if (x == 6 && y == 6) { return 5; }
+        if (x == 10 && y == 6) { return 6; }
+        if (x == 2 && y == 10) { return 7; }
+        if (x == 6 && y == 10) { return 8; }
+        if (x == 10 && y == 10) { return 9; }
+        else { return 0; }
+    }
+    public bool EvaluateWin(Player player)
+    {
+        var p1 = player.MarkerOnBoard;
+        if (p1.Contains(1) && p1.Contains(2) && p1.Contains(3)) { return true; }
+        if (p1.Contains(4) && p1.Contains(5) && p1.Contains(6)) { return true; }
+        if (p1.Contains(7) && p1.Contains(8) && p1.Contains(9)) { return true; }
+        if (p1.Contains(1) && p1.Contains(4) && p1.Contains(7)) { return true; }
+        if (p1.Contains(2) && p1.Contains(5) && p1.Contains(8)) { return true; }
+        if (p1.Contains(3) && p1.Contains(6) && p1.Contains(9)) { return true; }
+        if (p1.Contains(1) && p1.Contains(5) && p1.Contains(9)) { return true; }
+        if (p1.Contains(7) && p1.Contains(5) && p1.Contains(3)) { return true; }
+        else { return false; }
+    }
     public void MoveOnBoard(Player player)
     {
-        int position = 0;
+        Console.SetCursorPosition(0, 15);
+        Console.WriteLine("Playerturn: {0}                               ", player.Name);
+
+        int boardPosition;
         Console.CursorLeft = 2;
         Console.CursorTop = 2;
         PosX = Console.CursorLeft;
@@ -54,55 +80,18 @@ public class Board
             }
             Console.SetCursorPosition(PosX, PosY);
         }
-        //Translates coordinates to positions (1-9)
-        if (PosX == 2 && PosY == 2) { position = 1; }
-        if (PosX == 6 && PosY == 2) { position = 2; }
-        if (PosX == 10 && PosY == 2) { position = 3; }
-        if (PosX == 2 && PosY == 6) { position = 4; }
-        if (PosX == 6 && PosY == 6) { position = 5; }
-        if (PosX == 10 && PosY == 6) { position = 6; }
-        if (PosX == 2 && PosY == 10) { position = 7; }
-        if (PosX == 6 && PosY == 10) { position = 8; }
-        if (PosX == 10 && PosY == 10) { position = 9; }
 
+        boardPosition = CoordsToPos(PosX, PosY);
 
-        //Checks if the move if valid, if not, restarts the method. (prolly better with a while-loop but im tired)
-        if (!ValidMove(position))
+        if (this.OccupiedBoardSpaces.Contains(boardPosition))
         {
             MoveOnBoard(player);
         }
-        //Checks if the move is valid and which marker the player has. Also adds the position to the...
-        //... players personal "marker-map" to remember the location of the markers.
-        else if (ValidMove(position) && player.Marker == 'X')
+        else
         {
-            Console.SetCursorPosition(PosX - 1, PosY - 1);
-            Console.Write("X X");
-            Console.SetCursorPosition(PosX - 1, PosY);
-            Console.Write(" X ");
-            Console.SetCursorPosition(PosX - 1, PosY + 1);
-            Console.Write("X X");
-            player.MarkerOnBoard.Add(position);
-
+            player.DrawMarker(PosX, PosY);
+            player.MarkerOnBoard.Add(boardPosition);
+            this.OccupiedBoardSpaces.Add(boardPosition);
         }
-        else if (ValidMove(position) && player.Marker == 'O')
-        {
-            Console.SetCursorPosition(PosX - 1, PosY - 1);
-            Console.Write("OOO");
-            Console.SetCursorPosition(PosX - 1, PosY);
-            Console.Write("O O");
-            Console.SetCursorPosition(PosX - 1, PosY + 1);
-            Console.Write("OOO");
-            player.MarkerOnBoard.Add(position);
-
-        }
-        //Adds the "Valid position" to the Board-List to mark up occupied markerspaces.
-        OccupiedBoardSpaces.Add(position);
-
-    }
-    public bool ValidMove(int position)
-    {
-
-        return (!OccupiedBoardSpaces.Contains(position));
-
     }
 }

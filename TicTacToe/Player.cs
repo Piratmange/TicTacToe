@@ -16,10 +16,14 @@ public class Player
         Marker = marker;
         MarkerOnBoard = new List<int>();
     }
-    public void Iwon()
+    public void DrawMarker(int x, int y)
     {
-        Console.Clear();
-        Console.WriteLine("Player {0} has won the game", this.Name);
+        Console.SetCursorPosition(x - 1, y - 1);
+        Console.Write("{0}{0}{0}", Marker);
+        Console.SetCursorPosition(x - 1, y);
+        Console.Write("{0} {0}", Marker);
+        Console.SetCursorPosition(x - 1, y + 1);
+        Console.Write("{0}{0}{0}", Marker);
     }
 }
 
