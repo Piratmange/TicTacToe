@@ -5,13 +5,24 @@ using System.Threading;
 
 public class program
 {
+
     public static void Main()
     {
-        Console.WindowHeight = 30;
-        Console.WindowWidth = 40;
+        string P1 = Player.GetPlayerOne();
+        string C1 = Player.GetCharOne();
+        string P2 = Player.GetPlayerTwo();
+        string C2 = Player.GetCharTwo();
 
-        var PlayerOne = new Player("Simon", '/');
-        var PlayerTwo = new Player("Rickard", 'O');
+        ("Hello and welcome " + P1 +" and " + P2).Echo();
+        ("Press any key to continue to game TIC-TAC-TOE ").Echo();
+        Console.ReadKey();
+        Console.Clear();
+
+        Console.WindowHeight = 30;
+        Console.WindowWidth = 50;
+
+        var PlayerOne = new Player(P1, C1);
+        var PlayerTwo = new Player(P2, C2);
         var MyBoard = new Board();
         bool playerTurn = true;
 
