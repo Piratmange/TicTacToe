@@ -19,8 +19,8 @@ public class program
         Console.ReadKey();
         Console.Clear();
 
-        Console.WindowHeight = 30;
-        Console.WindowWidth = 50;
+        //Console.WindowHeight = 30;
+        //Console.WindowWidth = 50;
 
         var PlayerOne = new Player(P1, C1);
         var PlayerTwo = new Player(P2, C2);

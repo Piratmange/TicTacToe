@@ -19,7 +19,7 @@ public class Board
     //Draws the board, can exchange for a loop
     public string DrawBoard()
     {
-        return "┌───┬───┬───┐\n|   |   |   |\n|   |   |   |\n|   |   |   |\n├───┼───┼───┤\n|   |   |   |\n|   |   |   |\n|   |   |   |\n├───┼───┼───┤\n|   |   |   |\n|   |   |   |\n|   |   |   |\n└───┴───┴───┘\n";
+        return "╔═══╦═══╦═══╗\n║   ║   ║   ║\n║   ║   ║   ║\n║   ║   ║   ║\n╠═══╬═══╬═══╣\n║   ║   ║   ║\n║   ║   ║   ║\n║   ║   ║   ║\n╠═══╬═══╬═══╣\n║   ║   ║   ║\n║   ║   ║   ║\n║   ║   ║   ║\n╚═══╩═══╩═══╝\n";
     }
     //Translates Coordinates to Position (1-9)
     public int CoordsToPos(int x, int y)
