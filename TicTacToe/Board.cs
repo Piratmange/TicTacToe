@@ -51,6 +51,7 @@ public class Board
     public void MoveOnBoard(Player player)
     {
         Console.SetCursorPosition(0, 15);
+        "Please move your Char around with the arrowkeys".Echo();
         Console.WriteLine("Playerturn: {0}                               ", player.Name);
 
         int boardPosition;

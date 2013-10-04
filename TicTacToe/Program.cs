@@ -8,6 +8,7 @@ public class program
 
     public static void Main()
     {
+        Console.Clear();
         string P1 = Player.GetPlayerOne();
         string C1 = Player.GetCharOne();
         string P2 = Player.GetPlayerTwo();
@@ -32,19 +33,30 @@ public class program
         {
             var TempPlayer = playerTurn ? PlayerOne : PlayerTwo;
             playerTurn = !playerTurn;
+            var TempPlayerColor = playerTurn ? Console.ForegroundColor = ConsoleColor.DarkGreen : Console.ForegroundColor = ConsoleColor.DarkRed;
 
             MyBoard.MoveOnBoard(TempPlayer);
 
             Console.SetCursorPosition(0, 15);
             if (MyBoard.EvaluateWin(TempPlayer))
             {
+                Console.ResetColor();
                 Console.WriteLine("{0} WON!!!                                ", TempPlayer.Name);
-                break;
+                "Play again Y/N?".Echo();
+                string PlayAnswer = Console.ReadLine().ToLower();
+                if (PlayAnswer == "y")
+                    Main();
+                else break;
             }
             else if (MyBoard.OccupiedBoardSpaces.Count == 10)
             {
+                Console.ResetColor();
                 Console.WriteLine("It's a tie                                ");
-                break;
+                "Play again Y/N?".Echo();
+                string PlayAnswer = Console.ReadLine().ToLower();
+                if (PlayAnswer == "y")
+                    Main();
+                else break;
             }
         }
     }

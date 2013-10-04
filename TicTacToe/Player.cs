@@ -10,6 +10,7 @@ public class Player
     public string Marker { get; set; }
     public List<int> MarkerOnBoard { get; set; }
 
+    // Just some simple playerinputs
     public static string GetPlayerOne()
     {
         Console.WriteLine("Name of player 1?");
@@ -18,7 +19,7 @@ public class Player
     }
     public static string GetCharOne()
     {
-        Console.WriteLine("What char do you want?");
+        Console.WriteLine("What char do you want, either a letter or a number?");
         string C1 = Console.ReadLine();
         return C1;
     }
@@ -32,12 +33,10 @@ public class Player
     }
     public static string GetCharTwo()
     {
-        Console.WriteLine("What char do you want?");
+        Console.WriteLine("What char do you want, either a letter or a number?");
         string C2 = Console.ReadLine();
         return C2;
     }
-
-
 
     public Player(string name, string marker)
     {
@@ -47,6 +46,8 @@ public class Player
     }
     public void DrawMarker(int x, int y)
     {
+        // Drawing the Cursor depending on playerturn
+        // and chosen char
         Console.SetCursorPosition(x - 1, y - 1);
         Console.Write("{0}{0}{0}", Marker);
         Console.SetCursorPosition(x - 1, y);
