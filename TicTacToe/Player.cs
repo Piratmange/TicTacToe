@@ -8,41 +8,24 @@ public class Player
 {
     public string Name { get; set; }
     public string Marker { get; set; }
-    public List<int> MarkerOnBoard { get; set; }
+    public string Type { get; set; }
 
     // Just some simple playerinputs
     public static string GetPlayerOne()
     {
-        Console.WriteLine("Name of player 1?");
-        string P1 = Console.ReadLine();
-        return P1;
+        Console.WriteLine("Name of player?");
+        return Console.ReadLine();
     }
     public static string GetCharOne()
     {
         Console.WriteLine("What char do you want, either a letter or a number?");
-        string C1 = Console.ReadLine();
-        return C1;
+        return Console.ReadLine();
     }
-
-
-    public static string GetPlayerTwo()
-    {
-        Console.WriteLine("Name of player 2?");
-        string P2 = Console.ReadLine();
-        return P2;
-    }
-    public static string GetCharTwo()
-    {
-        Console.WriteLine("What char do you want, either a letter or a number?");
-        string C2 = Console.ReadLine();
-        return C2;
-    }
-
     public Player(string name, string marker)
     {
         Name = name;
         Marker = marker;
-        MarkerOnBoard = new List<int>();
+        Type = "Human";
     }
     public void DrawMarker(int x, int y)
     {

@@ -5,28 +5,15 @@ using System.Threading;
 
 public class program
 {
-
     public static void Main()
     {
-        Console.Clear();
-        string P1 = Player.GetPlayerOne();
-        string C1 = Player.GetCharOne();
-        string P2 = Player.GetPlayerTwo();
-        string C2 = Player.GetCharTwo();
-
-        ("Hello and welcome " + P1 +" and " + P2).Echo();
-        ("Press any key to continue to game TIC-TAC-TOE ").Echo();
-        Console.ReadKey();
-        Console.Clear();
-
-        //Console.WindowHeight = 30;
-        //Console.WindowWidth = 50;
-
-        var PlayerOne = new Player(P1, C1);
-        var PlayerTwo = new Player(P2, C2);
         var MyBoard = new Board();
         bool playerTurn = true;
 
+        var PlayerOne = Intro();
+        var PlayerTwo = Intro();
+
+        Console.Clear();
         Console.WriteLine(MyBoard.DrawBoard());
 
         while (true)
@@ -48,7 +35,7 @@ public class program
                     Main();
                 else break;
             }
-            else if (MyBoard.OccupiedBoardSpaces.Count == 10)
+            else if (!MyBoard.BoardTiles.ContainsValue(" "))
             {
                 Console.ResetColor();
                 Console.WriteLine("It's a tie                                ");
@@ -59,5 +46,31 @@ public class program
                 else break;
             }
         }
+    }
+    public static Player Intro()
+    {
+        var playerList = new List<Player>();
+        var AI1 = new AI_Random("Crappy AI1", "Z");
+        var AI2 = new AI_Random("Crappy AI2", "V");
+        var P1 = new Player("Player 1", "O");
+        var P2 = new Player("Player 2", "X");
+
+        playerList.Add(AI1);
+        playerList.Add(AI2);
+        playerList.Add(P1);
+        playerList.Add(P2);
+
+        int number = 1;
+        "Chose a player".Echo();
+        foreach (var player in playerList)
+        {
+            Console.Write("{0}. {1} that uses the marker: {2}", number, player.Name, player.Marker + "\n");
+            number++;
+        }
+        int playerNumber = int.Parse(Console.ReadLine());
+        var chosenPlayer = playerList[playerNumber - 1];
+        playerList.RemoveAt(playerNumber - 1);
+
+        return chosenPlayer;
     }
 }

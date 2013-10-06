@@ -8,44 +8,49 @@ public class Board
 {
     public int PosX { get; set; }
     public int PosY { get; set; }
-    public List<int> OccupiedBoardSpaces { get; set; } //Which tiles are occupied
+    public SortedList<int, string> BoardTiles { get; set; }
 
     public Board()
     {
-        PosX = 2;
+        PosX = 3;
         PosY = 2;
-        OccupiedBoardSpaces = new List<int>() { 0 };
+        BoardTiles = new SortedList<int, string>();
+
+        for (int ii = 1; ii < 10; ++ii)
+            BoardTiles.Add(ii, " ");
     }
     //Draws the board, can exchange for a loop
     public string DrawBoard()
     {
-        return "╔═══╦═══╦═══╗\n║   ║   ║   ║\n║   ║   ║   ║\n║   ║   ║   ║\n╠═══╬═══╬═══╣\n║   ║   ║   ║\n║   ║   ║   ║\n║   ║   ║   ║\n╠═══╬═══╬═══╣\n║   ║   ║   ║\n║   ║   ║   ║\n║   ║   ║   ║\n╚═══╩═══╩═══╝\n";
+        return "╔═════╦═════╦═════╗\n║     ║     ║     ║\n║     ║     ║     ║\n║     ║     ║     ║\n╠═════╬═════╬═════╣\n║     ║     ║     ║\n║     ║     ║     ║\n║     ║     ║     ║\n╠═════╬═════╬═════╣\n║     ║     ║     ║\n║     ║     ║     ║\n║     ║     ║     ║\n╚═════╩═════╩═════╝\n";
     }
     //Translates Coordinates to Position (1-9)
     public int CoordsToPos(int x, int y)
     {
-        if (x == 2 && y == 2) { return 1; }
-        if (x == 6 && y == 2) { return 2; }
-        if (x == 10 && y == 2) { return 3; }
-        if (x == 2 && y == 6) { return 4; }
-        if (x == 6 && y == 6) { return 5; }
-        if (x == 10 && y == 6) { return 6; }
-        if (x == 2 && y == 10) { return 7; }
-        if (x == 6 && y == 10) { return 8; }
-        if (x == 10 && y == 10) { return 9; }
+        if (x == 3 && y == 2) { return 1; }
+        if (x == 9 && y == 2) { return 2; }
+        if (x == 15 && y == 2) { return 3; }
+        if (x == 3 && y == 6) { return 4; }
+        if (x == 9 && y == 6) { return 5; }
+        if (x == 15 && y == 6) { return 6; }
+        if (x == 3 && y == 10) { return 7; }
+        if (x == 9 && y == 10) { return 8; }
+        if (x == 15 && y == 10) { return 9; }
         else { return 0; }
     }
     public bool EvaluateWin(Player player)
     {
-        var p1 = player.MarkerOnBoard;
-        if (p1.Contains(1) && p1.Contains(2) && p1.Contains(3)) { return true; }
-        if (p1.Contains(4) && p1.Contains(5) && p1.Contains(6)) { return true; }
-        if (p1.Contains(7) && p1.Contains(8) && p1.Contains(9)) { return true; }
-        if (p1.Contains(1) && p1.Contains(4) && p1.Contains(7)) { return true; }
-        if (p1.Contains(2) && p1.Contains(5) && p1.Contains(8)) { return true; }
-        if (p1.Contains(3) && p1.Contains(6) && p1.Contains(9)) { return true; }
-        if (p1.Contains(1) && p1.Contains(5) && p1.Contains(9)) { return true; }
-        if (p1.Contains(7) && p1.Contains(5) && p1.Contains(3)) { return true; }
+        var BT = BoardTiles;
+        var PM = player.Marker;
+
+        if (BT[1].Equals(PM) && BT[2].Equals(PM) && BT[3].Equals(PM)) { return true; }
+        if (BT[4].Equals(PM) && BT[5].Equals(PM) && BT[6].Equals(PM)) { return true; }
+        if (BT[7].Equals(PM) && BT[8].Equals(PM) && BT[9].Equals(PM)) { return true; }
+        if (BT[1].Equals(PM) && BT[4].Equals(PM) && BT[7].Equals(PM)) { return true; }
+        if (BT[2].Equals(PM) && BT[5].Equals(PM) && BT[8].Equals(PM)) { return true; }
+        if (BT[3].Equals(PM) && BT[6].Equals(PM) && BT[9].Equals(PM)) { return true; }
+        if (BT[1].Equals(PM) && BT[5].Equals(PM) && BT[9].Equals(PM)) { return true; }
+        if (BT[3].Equals(PM) && BT[5].Equals(PM) && BT[7].Equals(PM)) { return true; }
         else { return false; }
     }
     public void MoveOnBoard(Player player)
@@ -55,7 +60,7 @@ public class Board
         Console.WriteLine("Playerturn: {0}                               ", player.Name);
 
         int boardPosition;
-        Console.CursorLeft = 2;
+        Console.CursorLeft = 3;
         Console.CursorTop = 2;
         PosX = Console.CursorLeft;
         PosY = Console.CursorTop;
@@ -73,10 +78,10 @@ public class Board
                     if (PosY != 10) PosY += 4;
                     break;
                 case ConsoleKey.LeftArrow:
-                    if (PosX != 2) PosX -= 4;
+                    if (PosX != 3) PosX -= 6;
                     break;
                 case ConsoleKey.RightArrow:
-                    if (PosX != 10) PosX += 4;
+                    if (PosX != 15) PosX += 6;
                     break;
             }
             Console.SetCursorPosition(PosX, PosY);
@@ -84,15 +89,14 @@ public class Board
 
         boardPosition = CoordsToPos(PosX, PosY);
 
-        if (this.OccupiedBoardSpaces.Contains(boardPosition))
+        if (this.BoardTiles[boardPosition] != " ")
         {
             MoveOnBoard(player);
         }
         else
         {
             player.DrawMarker(PosX, PosY);
-            player.MarkerOnBoard.Add(boardPosition);
-            this.OccupiedBoardSpaces.Add(boardPosition);
+            this.BoardTiles[boardPosition] = player.Marker;
         }
     }
 }
