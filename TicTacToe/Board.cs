@@ -17,7 +17,9 @@ public class Board
         BoardTiles = new SortedList<int, char>();
 
         for (int ii = 1; ii < 10; ++ii)
+        {
             BoardTiles.Add(ii, ' ');
+        }
     }
     //Draws the board, can exchange for a loop
     public string DrawBoard()
