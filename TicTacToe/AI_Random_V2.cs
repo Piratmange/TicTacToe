@@ -70,6 +70,7 @@ public class AI_Random_V2 : AI_Random
         
         //MÅSTE LÄGGA TILL BOARDPOSITION IFALL DEN INTE KÖR WHILE-LOOPEN
 
+
         Thread.Sleep(1000);
 
         //Draws the marker
