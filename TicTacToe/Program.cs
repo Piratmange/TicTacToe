@@ -10,6 +10,7 @@ public class program
     static Player P2 = new Player("Player 2", 'O');
     static AI_Random AI1 = new AI_Random("Crappy AI1", 'Z');
     static AI_Random AI2 = new AI_Random("Crappy AI2", 'V');
+    static AI_Random_V2 AI3 = new AI_Random_V2("IF_AI", 'T');
     static bool playAgain = false;
     static bool firstTime = true;
 
@@ -31,7 +32,7 @@ public class program
 
             while (true)
             {
-                var TempPlayer = playerTurn ? AI1 : P2;
+                var TempPlayer = playerTurn ? AI3 : P2;
                 playerTurn = !playerTurn;
                 var TempPlayerColor = playerTurn ? Console.ForegroundColor = ConsoleColor.DarkGreen : Console.ForegroundColor = ConsoleColor.DarkRed;
                 MyBoard.MoveOnBoard(TempPlayer);
@@ -78,6 +79,7 @@ public class program
         playerList.Add(AI2);
         playerList.Add(P1);
         playerList.Add(P2);
+        playerList.Add(AI3);
 
         int number = 1;
         "Choose 2 players".Echo();
