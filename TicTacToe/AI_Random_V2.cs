@@ -20,12 +20,13 @@ public class AI_Random_V2 : AI_Random
         //Replaces the opponents marker with 'x'.
         for (int ii = 1; ii < 10; ++ii)
         {
-            if (tempList[ii] != ' ' || tempList[ii] == this.Marker) { tempList[ii] = 'x'; }
+            if (tempList[ii] == this.Marker) { continue; }
+            else if (tempList[ii] != ' ') { tempList[ii] = 'x'; }
         }
-        for (int ii = 1; ii < 10; ++ii)
-        {
-            Console.WriteLine(tempList[ii]);
-        }
+        //for (int ii = 1; ii < 10; ++ii)
+        //{
+        //    Console.WriteLine(tempList[ii]);
+        //}
 
         if (tempList[1] == 'x' && tempList[2] == 'x') { coords = PosToCoords(3); boardPosition = 3; }
         if (tempList[1] == 'x' && tempList[3] == 'x') { coords = PosToCoords(2); boardPosition = 2; }
