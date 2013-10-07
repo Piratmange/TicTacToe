@@ -6,7 +6,7 @@ using System.Threading;
 public class program
 {
     static int playerNumber;
-    static Player P1 = new Player("Default", 'C');
+    static Player P1 = new Player("Default", 'X');
     static Player P2 = new Player("Player 2", 'O');
     static AI_Random AI1 = new AI_Random("Crappy AI1", 'Z');
     static AI_Random AI2 = new AI_Random("Crappy AI2", 'V');
@@ -31,7 +31,8 @@ public class program
 
             while (true)
             {
-                var TempPlayer = playerTurn ? AI1 : P2;
+                // checks whos turn it is
+                var TempPlayer = playerTurn ? P1 : P2;
                 playerTurn = !playerTurn;
                 var TempPlayerColor = playerTurn ? Console.ForegroundColor = ConsoleColor.DarkGreen : Console.ForegroundColor = ConsoleColor.DarkRed;
                 MyBoard.MoveOnBoard(TempPlayer);
@@ -39,8 +40,8 @@ public class program
                 Console.SetCursorPosition(0, 15);
                 if (MyBoard.EvaluateWin(TempPlayer))
                 {
-                    Console.ResetColor();
                     Console.WriteLine("{0} WON!!!                                ", TempPlayer.Name);
+                    // For every win add score
                     TempPlayer.Winning++;
                     "Play again Y/N?".Echo();
                     string PlayAnswer = Console.ReadLine().ToLower();
@@ -80,7 +81,7 @@ public class program
         playerList.Add(P2);
 
         int number = 1;
-        "Choose 2 players".Echo();
+        "Choose player".Echo();
         foreach (var player in playerList)
         {
             Console.Write("{0}. {1} that uses the marker: {2}", number, player.Name, player.Marker + "\n");
@@ -93,7 +94,12 @@ public class program
             playerList.RemoveAt(2);
             playerList.Insert(2, P1);
         }
-        
+        if (playerNumber == 4)
+        {
+            P1 = new Player(Player.GetPlayer(), Player.GetChar());
+            playerList.RemoveAt(3);
+            playerList.Insert(3, P2);
+        }
         var chosenPlayer = playerList[playerNumber - 1];
         playerList.RemoveAt(playerNumber - 1);
         return chosenPlayer;               
@@ -103,9 +109,5 @@ public class program
     {
         Console.SetCursorPosition(x, y);
         Console.WriteLine(Name + " Wins: " + Wins + "                           ");
-    }
-
-    public static void firstIntro()
-    {
     }
 }
