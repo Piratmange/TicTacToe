@@ -1,230 +1,127 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
-class program
+public class program
 {
-    const int xOrig = 2;
-    const int yOrig = 4;
+    static int playerNumber;
+    static char buttonPressed;
+    static Player P1;
+    static Player P2;
+    static bool playAgain = false;
+    static bool firstTime = true;
 
-    const int xStep = 4;
-    const int yStep = 2;
-
-    static int[] pos = new int[2];
-    static Player[,] board = new Player[3, 3];
-    static Player winner = Player.None;
-
-    enum Player
+    public static void Main()
     {
-        None = 0,
-        P1,
-        P2
-    }
+        var MyBoard = new Board();
+        bool playerTurn = true;
 
-    static void Main(string[] args)
-    {
-        Console.CursorSize = 100;
-        ConsoleKey playAgain = ConsoleKey.Y;
-        while (playAgain == ConsoleKey.Y)
+        if (playAgain == false || firstTime != false)
         {
-            Player currentPlayer = Player.P1;
-            while (!GameOver())
-            {
-                GetUserMove(currentPlayer);
-                currentPlayer = currentPlayer == Player.P1 ? Player.P2 : Player.P1;
-            }
-
-            DisplayBoard(Player.None);
-            Console.SetCursorPosition(0, 13);
-
-            if (winner == Player.None)
-            {
-                Console.WriteLine("It was a draw...");
-            }
-            else
-            {
-                Console.WriteLine("The winner is: Player {0}", winner == Player.P1 ? '1' : '2');
-            }
-
-            ResetGame();
-            Console.WriteLine("Play Again? [Y/N]\n");
-            playAgain = Console.ReadKey().Key;
+            firstIntro();
         }
-    }
 
-    static void GetUserMove(Player currentPlayer)
-    {
-        bool validMove = false;
-        while (!validMove)
-        {
-            DisplayBoard(currentPlayer);
-            Console.CursorLeft += 2;
-            Console.CursorTop -= 8;
-
-            pos[0] = Console.CursorLeft;
-            pos[1] = Console.CursorTop;
-
-            ConsoleKey conKey = ConsoleKey.NoName;
-            while ((conKey = Console.ReadKey().Key) != ConsoleKey.Enter)
-            {
-                DisplayBoard(currentPlayer);
-                switch (conKey)
-                {
-                    case ConsoleKey.UpArrow:
-                        if (pos[1] == 8 || pos[1] == 6) pos[1] -= 2;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        if (pos[1] < 8) pos[1] += 2;
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        if (pos[0] > 2) pos[0] -= 4;
-                        break;
-                    case ConsoleKey.RightArrow:
-                        if (pos[0] < 10) pos[0] += 4;
-                        break;
-                }
-
-                Console.SetCursorPosition(pos[0], pos[1]);
-            }
-
-            int x = (pos[1] - yOrig) / yStep;
-            int y = (pos[0] - xOrig) / xStep;
-            if (board[x, y] == Player.None)
-            {
-                board[x, y] = currentPlayer;
-                validMove = true;
-            }
-            else
-            {
-                Console.Clear();
-                Console.WriteLine("That spot already has a marker! Please place your marker elsewhere...");
-                Console.WriteLine("(Press any key to continue...)");
-                Console.ReadKey();
-            }
-        }
-    }
-
-    static void DisplayBoard(Player currentPlayer)
-    {
         Console.Clear();
-        DisplayInstructions();
-        Console.WriteLine("┌───────────┐");
-        for (int row = 0; row < 3; row++)
+        Console.WriteLine(MyBoard.DrawBoard());
+
+        WinningCount(P1.Name, P1.Winning, 25, 10);
+        WinningCount(P2.Name, P2.Winning, 25, 11);
+
+        while (true)
         {
-            char[] arr = new char[3];
-            for (int col = 0; col < 3; col++)
+            var TempPlayer = playerTurn ? P1 : P2;
+            playerTurn = !playerTurn;
+            var TempPlayerColor = playerTurn ? Console.ForegroundColor = ConsoleColor.DarkGreen : Console.ForegroundColor = ConsoleColor.DarkRed;
+            MyBoard.MoveOnBoard(TempPlayer);
+
+            Console.SetCursorPosition(0, 15);
+            if (MyBoard.EvaluateWin(TempPlayer))
             {
-                if (board[row, col] == Player.None)
+                Console.WriteLine("{0} WON!!!                                ", TempPlayer.Name);
+                TempPlayer.Winning++;
+                "Play again Y/N?".Echo();
+                char PlayAnswer = Console.ReadKey().KeyChar;
+                if (PlayAnswer == 'y')
                 {
-                    arr[col] = ' ';
+                    playAgain = true;
+                    firstTime = false;
+                    Main();
                 }
-                else
-                {
-                    arr[col] = board[row, col] == Player.P1 ? 'X' : 'O';
-                }
+                else Environment.Exit(1);
             }
-            Console.WriteLine("| {0} |", string.Join(" | ", arr));
-            Console.WriteLine("├───┼───┼───┤");
-        }
-        Console.WriteLine("\nPlayer {0}'s Turn...", currentPlayer == Player.P1 ? '1' : '2');
-    }
-
-    static bool GameOver()
-    {
-        // Reading order
-        bool boardComplete = true;
-        for (int row = 0; row < 3; row++)
-        {
-            for (int col = 0; col < 3; col++)
+            else if (!MyBoard.BoardTiles.ContainsValue(' '))
             {
-                Player player = Player.None;
-                if ((player = board[row, col]) != Player.None)
+                Console.ResetColor();
+                Console.WriteLine("It's a tie                                ");
+                "Play again Y/N?".Echo();
+                char PlayAnswer = Console.ReadKey().KeyChar;
+                if (PlayAnswer == 'y')
                 {
-                    // Check row
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            if (board[row, i] != player)
-                            {
-                                break;
-                            }
-                            else if (i == 2)
-                            {
-                                winner = player;
-                                return true;
-                            }
-                        }
-                    }
-
-                    // Check column
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            if (board[i, col] != player)
-                            {
-                                break;
-                            }
-                            else if (i == 2)
-                            {
-
-                                winner = player;
-                                return true;
-                            }
-                        }
-                    }
-
-                    // Determines whether we should check the diagonals
-                    if ((row == 1 && col == 1) || (col != 1 && row != 1))
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            if (board[i, i] != player)
-                            {
-                                break;
-                            }
-                            else if (i == 2)
-                            {
-                                winner = player;
-                                return true;
-                            }
-                        }
-
-                        for (int i = 2, j = 0; j < 3; i--, j++)
-                        {
-                            if (board[i, j] != player)
-                            {
-                                break;
-                            }
-                            else if (j == 2)
-                            {
-                                winner = player;
-                                return true;
-                            }
-                        }
-                    }
+                    playAgain = true;
+                    firstTime = false;
+                    Main();
                 }
-                else
-                {
-                    boardComplete = false;
-                }
+                else break;
             }
-        }
 
-        if (boardComplete)
+        }
+    }
+
+    public static Player Intro()
+    {
+        var playerList = new List<Player>();
+
+        playerList.Add(P1);
+        playerList.Add(P2);
+
+        int number = 1;
+        "Choose 2 players".Echo();
+        foreach (var player in playerList)
         {
-            return true;
+            Console.Write("{0}. {1} that uses the marker: {2}", number, player.Name, player.Marker + "\n");
+            number++;
         }
-        return false;
+  
+        var chosenPlayer = playerList[playerNumber - 1];
+        playerList.RemoveAt(playerNumber - 1);
+        return chosenPlayer;
     }
 
-    static void ResetGame()
+    public static void WinningCount(string Name, int Wins, int x, int y)
     {
-        board = new Player[3, 3];
-        winner = Player.None;
+        Console.SetCursorPosition(x, y);
+        Console.WriteLine(Name + " Wins: " + Wins + "                           ");
     }
 
-    static void DisplayInstructions()
+    public static void firstIntro()
     {
-        Console.WriteLine("Note: Use the arrow keys to navigate.\n(Press enter when you want to place your marker.)\n");
+        Console.WriteLine("1. Mänsklig Spelare\n2. Dum Dator\n3. Smart Dator");
+        Console.WriteLine("Välj Spelare 1!");
+        buttonPressed = Console.ReadKey().KeyChar;
+
+        if (buttonPressed == '1')
+        {
+            Console.WriteLine("");
+            P1 = new Player(Player.GetPlayer(), Player.GetChar());
+        }
+        else if (buttonPressed == '2')
+            P1 = new AI_Random("Anna", 'X');
+        else
+            P1 = new AI_Random_V2("Anna", 'X'); 
+
+        Console.WriteLine("\n1. Mänsklig Spelare\n2. Dum Dator\n3. Smart Dator");
+        Console.WriteLine("Välj Spelare 2!");
+        buttonPressed = Console.ReadKey().KeyChar;
+
+        if (buttonPressed == '1')
+        {
+            Console.WriteLine("");
+            P2 = new Player(Player.GetPlayer(), Player.GetChar());
+        }
+        else if (buttonPressed == '2')
+            P2 = new AI_Random("AnnaBåt", 'O');
+        else
+            P2 = new AI_Random_V2("Anna", 'O');
     }
 }

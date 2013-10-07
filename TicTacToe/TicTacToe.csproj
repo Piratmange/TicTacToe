@@ -42,6 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyExtensions.cs" />
+    <Compile Include="AI_Random.cs" />
+    <Compile Include="AI_Random_V2.cs" />
+    <Compile Include="Board.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
