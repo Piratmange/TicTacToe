@@ -6,22 +6,21 @@ using System.Threading;
 public class program
 {
     static int playerNumber;
-    static Player P1 = new Player("Default", 'C');
-    static Player P2 = new Player("Player 2", 'O');
-    static AI_Random AI1 = new AI_Random("Crappy AI1", 'Z');
-    static AI_Random AI2 = new AI_Random("Crappy AI2", 'V');
-    static AI_Random_V2 AI3 = new AI_Random_V2("IF_AI", 'T');
+    static char buttonPressed;
+    static Player P1;
+    static Player P2;
     static bool playAgain = false;
     static bool firstTime = true;
 
     public static void Main()
     {
+
         var MyBoard = new Board();
         bool playerTurn = true;
 
         if (playAgain == false || firstTime != false)
         {
-            Intro();
+            firstIntro();
         }
 
         Console.Clear();
@@ -30,43 +29,43 @@ public class program
         WinningCount(P1.Name, P1.Winning, 25, 10);
         WinningCount(P2.Name, P2.Winning, 25, 11);
 
-            while (true)
-            {
-                var TempPlayer = playerTurn ? AI3 : P2;
-                playerTurn = !playerTurn;
-                var TempPlayerColor = playerTurn ? Console.ForegroundColor = ConsoleColor.DarkGreen : Console.ForegroundColor = ConsoleColor.DarkRed;
-                MyBoard.MoveOnBoard(TempPlayer);
+        while (true)
+        {
+            var TempPlayer = playerTurn ? P1 : P2;
+            playerTurn = !playerTurn;
+            var TempPlayerColor = playerTurn ? Console.ForegroundColor = ConsoleColor.DarkGreen : Console.ForegroundColor = ConsoleColor.DarkRed;
+            MyBoard.MoveOnBoard(TempPlayer);
 
-                Console.SetCursorPosition(0, 15);
-                if (MyBoard.EvaluateWin(TempPlayer))
+            Console.SetCursorPosition(0, 15);
+            if (MyBoard.EvaluateWin(TempPlayer))
+            {
+                Console.WriteLine("{0} WON!!!                                ", TempPlayer.Name);
+                TempPlayer.Winning++;
+                "Play again Y/N?".Echo();
+                char PlayAnswer = Console.ReadKey().KeyChar;
+                if (PlayAnswer == 'y')
                 {
-                    Console.WriteLine("{0} WON!!!                                ", TempPlayer.Name);
-                    TempPlayer.Winning++;
-                    "Play again Y/N?".Echo();
-                    string PlayAnswer = Console.ReadLine().ToLower();
-                    if (PlayAnswer == "y")
-                    {
-                        playAgain = true;
-                        firstTime = false;
-                        Main();
-                    }
-                    else Environment.Exit(1);
+                    playAgain = true;
+                    firstTime = false;
+                    Main();
                 }
-                else if (!MyBoard.BoardTiles.ContainsValue(' '))
+                else Environment.Exit(1);
+            }
+            else if (!MyBoard.BoardTiles.ContainsValue(' '))
+            {
+                Console.ResetColor();
+                Console.WriteLine("It's a tie                                ");
+                "Play again Y/N?".Echo();
+                char PlayAnswer = Console.ReadKey().KeyChar;
+                if (PlayAnswer == 'y')
                 {
-                    Console.ResetColor();
-                    Console.WriteLine("It's a tie                                ");
-                    "Play again Y/N?".Echo();
-                    string PlayAnswer = Console.ReadLine().ToLower();
-                    if (PlayAnswer == "y")
-                    {
-                        Main();
-                        playAgain = false;
-                        firstTime = false;
-                    }
-                    else break;
+                    playAgain = true;
+                    firstTime = false;
+                    Main();
                 }
-            
+                else break;
+            }
+
         }
     }
 
@@ -74,11 +73,8 @@ public class program
     {
         var playerList = new List<Player>();
 
-        playerList.Add(AI1);
-        playerList.Add(AI2);
         playerList.Add(P1);
         playerList.Add(P2);
-        playerList.Add(AI3);
 
         int number = 1;
         "Choose 2 players".Echo();
@@ -87,23 +83,10 @@ public class program
             Console.Write("{0}. {1} that uses the marker: {2}", number, player.Name, player.Marker + "\n");
             number++;
         }
-        playerNumber = int.Parse(Console.ReadLine());
-        if (playerNumber == 3)
-        {
-            P1 = new Player(Player.GetPlayer(), Player.GetChar());
-            playerList.RemoveAt(2);
-            playerList.Insert(2, P1);
-        }
-        if (playerNumber == 4)
-        {
-            P1 = new Player(Player.GetPlayer(), Player.GetChar());
-            playerList.RemoveAt(3);
-            playerList.Insert(3, P1);
-        }
-        
+
         var chosenPlayer = playerList[playerNumber - 1];
         playerList.RemoveAt(playerNumber - 1);
-        return chosenPlayer;               
+        return chosenPlayer;
     }
 
     public static void WinningCount(string Name, int Wins, int x, int y)
@@ -112,4 +95,34 @@ public class program
         Console.WriteLine(Name + " Wins: " + Wins + "                           ");
     }
 
+    public static void firstIntro()
+    {
+        Console.WriteLine("1. Mänsklig Spelare\n2. Dum Dator\n3. Smart Dator");
+        Console.WriteLine("Välj Spelare 1!");
+        buttonPressed = Console.ReadKey().KeyChar;
+
+        if (buttonPressed == '1')
+        {
+            Console.WriteLine("");
+            P1 = new Player(Player.GetPlayer(), Player.GetChar());
+        }
+        else if (buttonPressed == '2')
+            P1 = new AI_Random("Anna", 'X');
+        else
+            P1 = new AI_Random_V2("Anna", 'X');
+
+        Console.WriteLine("\n1. Mänsklig Spelare\n2. Dum Dator\n3. Smart Dator");
+        Console.WriteLine("Välj Spelare 2!");
+        buttonPressed = Console.ReadKey().KeyChar;
+
+        if (buttonPressed == '1')
+        {
+            Console.WriteLine("");
+            P2 = new Player(Player.GetPlayer(), Player.GetChar());
+        }
+        else if (buttonPressed == '2')
+            P2 = new AI_Random("AnnaBåt", 'O');
+        else
+            P2 = new AI_Random_V2("Anna", 'O');
+    }
 }
