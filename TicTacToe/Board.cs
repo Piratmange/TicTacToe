@@ -8,22 +8,24 @@ public class Board
 {
     public int PosX { get; set; }
     public int PosY { get; set; }
-    public SortedList<int, string> BoardTiles { get; set; }
+    public SortedList<int, char> BoardTiles { get; set; }
 
     public Board()
     {
         PosX = 3;
         PosY = 2;
-        BoardTiles = new SortedList<int, string>();
+        BoardTiles = new SortedList<int, char>();
 
         for (int ii = 1; ii < 10; ++ii)
-            BoardTiles.Add(ii, " ");
+            BoardTiles.Add(ii, ' ');
     }
     //Draws the board, can exchange for a loop
     public string DrawBoard()
     {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
         return "╔═════╦═════╦═════╗\n║     ║     ║     ║\n║     ║     ║     ║\n║     ║     ║     ║\n╠═════╬═════╬═════╣\n║     ║     ║     ║\n║     ║     ║     ║\n║     ║     ║     ║\n╠═════╬═════╬═════╣\n║     ║     ║     ║\n║     ║     ║     ║\n║     ║     ║     ║\n╚═════╩═════╩═════╝\n";
     }
+
     //Translates Coordinates to Position (1-9)
     public int CoordsToPos(int x, int y)
     {
@@ -55,8 +57,13 @@ public class Board
     }
     public void MoveOnBoard(Player player)
     {
-        Console.SetCursorPosition(0, 15);
-        "Please move your Char around with the arrowkeys".Echo();
+        // putting text on the side instead of under the board
+        Console.SetCursorPosition(25, 5);
+        "Please move around with the arrowkeys".Echo();
+        Console.SetCursorPosition(25, 6);
+        "Place your marker using the enterkey".Echo();
+
+        Console.SetCursorPosition(25, 8);
         Console.WriteLine("Playerturn: {0}                               ", player.Name);
 
         int boardPosition;
@@ -89,7 +96,7 @@ public class Board
 
         boardPosition = CoordsToPos(PosX, PosY);
 
-        if (this.BoardTiles[boardPosition] != " ")
+        if (this.BoardTiles[boardPosition] != ' ')
         {
             MoveOnBoard(player);
         }

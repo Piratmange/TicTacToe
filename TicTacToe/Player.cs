@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 public class Player
 {
     public string Name { get; set; }
-    public string Marker { get; set; }
+    public char Marker { get; set; }
     public string Type { get; set; }
 
     // Just some simple playerinputs
@@ -16,12 +16,15 @@ public class Player
         Console.WriteLine("Name of player?");
         return Console.ReadLine();
     }
-    public static string GetCharOne()
+    public static char GetCharOne()
     {
+        char C1 = 'X';
         Console.WriteLine("What char do you want, either a letter or a number?");
-        return Console.ReadLine();
+        C1 = Console.ReadKey().KeyChar;
+        Console.WriteLine(C1);
+        return C1;
     }
-    public Player(string name, string marker)
+    public Player(string name, char marker)
     {
         Name = name;
         Marker = marker;

@@ -19,7 +19,7 @@ public class AI_Random : Player
         Console.SetCursorPosition(x - 1, y + 1);
         Console.Write("{0}{0}{0}", Marker);
     }
-    public AI_Random(string name, string marker) : base(name, marker)
+    public AI_Random(string name, char marker) : base(name, marker)
     {
         Type = "Computer";
     }
