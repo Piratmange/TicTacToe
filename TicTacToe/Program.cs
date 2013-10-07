@@ -40,7 +40,6 @@ public class program
                 Console.SetCursorPosition(0, 15);
                 if (MyBoard.EvaluateWin(TempPlayer))
                 {
-                    Console.ResetColor();
                     Console.WriteLine("{0} WON!!!                                ", TempPlayer.Name);
                     TempPlayer.Winning++;
                     "Play again Y/N?".Echo();
@@ -95,6 +94,12 @@ public class program
             playerList.RemoveAt(2);
             playerList.Insert(2, P1);
         }
+        if (playerNumber == 4)
+        {
+            P1 = new Player(Player.GetPlayer(), Player.GetChar());
+            playerList.RemoveAt(3);
+            playerList.Insert(3, P1);
+        }
         
         var chosenPlayer = playerList[playerNumber - 1];
         playerList.RemoveAt(playerNumber - 1);
@@ -107,7 +112,4 @@ public class program
         Console.WriteLine(Name + " Wins: " + Wins + "                           ");
     }
 
-    public static void firstIntro()
-    {
-    }
 }
