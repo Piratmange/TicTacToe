@@ -122,6 +122,6 @@ public class program
         else if (buttonPressed == '2')
             P2 = new AI_Random("AnnaBåt", 'O');
         else
-            P2 = new AI_Random_V2("Anna", 'O');
+            P2 = new AI_Random_V2("AnnaBåt", 'O');
     }
 }
