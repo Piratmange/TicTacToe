@@ -111,11 +111,12 @@ public class Board
                 this.BoardTiles[boardPosition] = player.Marker;
             }
         }
-        else if (player.Type == "Computer")
+        else if (player.Type == "Computer1")
         {
-            boardPosition = CoordsToPos(PosX, PosY);
             var tempPlayer = player as AI_Random;
-            tempPlayer.DrawMarker(PosX, PosY);
+
+            boardPosition = tempPlayer.DrawMarker(this.BoardTiles);
+
             this.BoardTiles[boardPosition] = tempPlayer.Marker;
         }
     }
