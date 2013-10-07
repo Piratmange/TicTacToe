@@ -9,19 +9,20 @@ public class Player
     public string Name { get; set; }
     public char Marker { get; set; }
     public string Type { get; set; }
+    public int Winning { get; set; }
 
     // Just some simple playerinputs
-    public static string GetPlayerOne()
+    public static string GetPlayer()
     {
         Console.WriteLine("Name of player?");
         return Console.ReadLine();
     }
-    public static char GetCharOne()
+    public static char GetChar()
     {
         char C1 = 'X';
         Console.WriteLine("What char do you want, either a letter or a number?");
         C1 = Console.ReadKey().KeyChar;
-        Console.WriteLine(C1);
+        Console.WriteLine("\n");
         return C1;
     }
     public Player(string name, char marker)
@@ -29,6 +30,7 @@ public class Player
         Name = name;
         Marker = marker;
         Type = "Human";
+        Winning = 0;
     }
     public void DrawMarker(int x, int y)
     {

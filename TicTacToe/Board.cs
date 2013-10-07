@@ -63,8 +63,11 @@ public class Board
         Console.SetCursorPosition(25, 6);
         "Place your marker using the enterkey".Echo();
 
+
         Console.SetCursorPosition(25, 8);
         Console.WriteLine("Playerturn: {0}                               ", player.Name);
+
+
 
         int boardPosition;
         Console.CursorLeft = 3;
@@ -72,38 +75,48 @@ public class Board
         PosX = Console.CursorLeft;
         PosY = Console.CursorTop;
 
-        //Moves the cursor for placement of marker (X or O)
-        ConsoleKey conKey = ConsoleKey.NoName;
-        while ((conKey = Console.ReadKey().Key) != ConsoleKey.Enter)
+        if (player.Type == "Human")
         {
-            switch (conKey)
+            //Moves the cursor for placement of marker (X or O)
+            ConsoleKey conKey = ConsoleKey.NoName;
+            while ((conKey = Console.ReadKey().Key) != ConsoleKey.Enter)
             {
-                case ConsoleKey.UpArrow:
-                    if (PosY != 2) PosY -= 4;
-                    break;
-                case ConsoleKey.DownArrow:
-                    if (PosY != 10) PosY += 4;
-                    break;
-                case ConsoleKey.LeftArrow:
-                    if (PosX != 3) PosX -= 6;
-                    break;
-                case ConsoleKey.RightArrow:
-                    if (PosX != 15) PosX += 6;
-                    break;
+                switch (conKey)
+                {
+                    case ConsoleKey.UpArrow:
+                        if (PosY != 2) PosY -= 4;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (PosY != 10) PosY += 4;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        if (PosX != 3) PosX -= 6;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (PosX != 15) PosX += 6;
+                        break;
+                }
+                Console.SetCursorPosition(PosX, PosY);
             }
-            Console.SetCursorPosition(PosX, PosY);
-        }
 
-        boardPosition = CoordsToPos(PosX, PosY);
+            boardPosition = CoordsToPos(PosX, PosY);
 
-        if (this.BoardTiles[boardPosition] != ' ')
-        {
-            MoveOnBoard(player);
+            if (this.BoardTiles[boardPosition] != ' ')
+            {
+                MoveOnBoard(player);
+            }
+            else
+            {
+                player.DrawMarker(PosX, PosY);
+                this.BoardTiles[boardPosition] = player.Marker;
+            }
         }
-        else
+        else if (player.Type == "Computer")
         {
-            player.DrawMarker(PosX, PosY);
-            this.BoardTiles[boardPosition] = player.Marker;
+            boardPosition = CoordsToPos(PosX, PosY);
+            var tempPlayer = player as AI_Random;
+            tempPlayer.DrawMarker(PosX, PosY);
+            this.BoardTiles[boardPosition] = tempPlayer.Marker;
         }
     }
 }
