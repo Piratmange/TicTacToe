@@ -14,6 +14,7 @@ public class program
 
     public static void Main()
     {
+
         var MyBoard = new Board();
         bool playerTurn = true;
 
@@ -122,6 +123,10 @@ public class program
         else if (buttonPressed == '2')
             P2 = new AI_Random("AnnaBåt", 'O');
         else
+<<<<<<< HEAD
             P2 = new AI_Random_V2("AnnaBåt", 'O');
+=======
+            P2 = new AI_Random_V2("Anna", 'O');
+>>>>>>> c5d61e3e0f97674da5fac5476662a92b86b16a47
     }
 }
